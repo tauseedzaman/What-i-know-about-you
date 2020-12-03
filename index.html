@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.x-git.min.js"></script>
+</head>
+<body class="bg-dark">
+    <h1 class="w3-center mt-4 w3-text-blue w3-animate-zoom">What i know about you</h1>
+    <div class="container py-2 ">
+        <div class="row">
+            <div class="col-md-8 mx-auto ">
+                <table class="w3-table-all table w3-hoverable ">
+                    <thead>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Browser</td>
+                        <td id="browser_name"></td>
+                    </tr>
+                    <tr>
+                        <td>Platform</td>
+                        <td id="platform"></td>
+                    </tr>
+                    <tr>
+                        <td>Language</td>
+                        <td id="lang"></td>
+                    </tr>
+                    <tr>
+                        <td>Online</td>
+                        <td id="online"></td>
+                    </tr>
+                    <tr>
+                        <td>IP</td>
+                        <td id="ip"></td>
+                    </tr>
+                    <tr>
+                        <td>Country</td>
+                        <td id="country"></td>
+                    </tr>
+                    <tr>
+                        <td>TimeZone</td>
+                        <td id="timezone"></td>
+                    </tr>
+                    <tr>
+                        <td>City</td>
+                        <td id="city"></td>
+                    </tr>
+                    <tr>
+                        <td>OsName</td>
+                        <td id="OSName"></td>
+                    </tr>
+                    <tr>
+                        <td>ScreenWith</td>
+                        <td id="scrw"></td>
+                    </tr>
+                    <tr>
+                        <td>ScreenHeight</td>
+                        <td id="scrh"></td>
+                    </tr>
+                    <tr>
+                        <td>CurrentPath</td>
+                        <td id="currentpath"></td>
+                    </tr>
+                    <tr>
+                        <td>HistoryLength</td>
+                        <td id="historylength"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+
+        $(document).ready(function(){
+            var browser_name = (function (agent) {
+                switch (true) {
+                    case agent.indexOf("edge") > -1: return "edge";
+                    case agent.indexOf("edg") > -1: return "chromium based edge (dev or canary)";
+                    case agent.indexOf("opr") > -1 && !!window.opr: return "opera";
+                    case agent.indexOf("chrome") > -1 && !!window.chrome: return "chrome";
+                    case agent.indexOf("trident") > -1: return "ie";
+                    case agent.indexOf("firefox") > -1: return "firefox";
+                    case agent.indexOf("safari") > -1: return "safari";
+                    default: return "other browser";
+                }
+            })(window.navigator.userAgent.toLowerCase());
+            var lang = window.navigator.language;
+            var os = window.navigator.platform;
+            var online = window.navigator.onLine;
+            var x = window.navigator.geolocation;
+            var scrw = window.screen.availWidth;
+            var scrh = window.screen.availHeight;
+            var currentpath = window.location.pathname;
+            var historylength = window.history.length;
+            $.get('https://ipinfo.io',function (e){
+              var ip = e.ip;
+              var country = e.country;
+              var timezone = e.timezone;
+              var city = e.city;
+                $('#ip').html(ip);
+                $('#country').html(country);
+                $('#timezone').html(timezone);
+                $('#city').html(city);
+            },'json');
+           $('#browser_name').html(browser_name);
+           $('#platform').html(os);
+           $('#lang').html(lang);
+           $('#online').text(online);
+                var OSName="Unknown OS";
+                if (navigator.appVersion.indexOf("Win")!=-1) OSName="Windows";
+                if (navigator.appVersion.indexOf("Mac")!=-1) OSName="MacOS";
+                if (navigator.appVersion.indexOf("X11")!=-1) OSName="UNIX";
+                if (navigator.appVersion.indexOf("Linux")!=-1) OSName="Linux";
+           $("#OSName").html(OSName);
+           $("#scrw").html(scrw);
+           $("#scrh").html(scrh);
+           $("#currentpath").html(currentpath);
+           $("#historylength").html(historylength);
+        });
+    </script>
+</body>
+</html>
