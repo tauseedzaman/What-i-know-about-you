@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://www.w3schools.com/lib/w3.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="jquery.min.js"></script>
+    <script src="detector.min.js"></script>
 </head>
 <body class="bg-dark">
     <h1 class="w3-center mt-4 w3-text-blue w3-animate-zoom w3">What i know about you</h1>
@@ -51,8 +52,19 @@
                         <td id="city"></td>
                     </tr>
                     <tr>
+                        <td>postal</td>
+                        <td id="pcode"></td>
+                    </tr>
+                    <tr>
                         <td>OsName</td>
                         <td id="OSName"></td>
+                    </tr>
+                    <tr>
+                        <td>OsVersion</td>
+                        <td id="osv"></td>
+                    </tr><tr>
+                        <td>Device</td>
+                        <td id="device"></td>
                     </tr>
                     <tr>
                         <td>ScreenWith</td>
@@ -78,22 +90,9 @@
     <script>
 
         $(document).ready(function(){
-            var browser_name = (function (agent) {
-                switch (true) {
-                    case agent.indexOf("edge") > -1: return "edge";
-                    case agent.indexOf("edg") > -1: return "chromium based edge (dev or canary)";
-                    case agent.indexOf("opr") > -1 && !!window.opr: return "opera";
-                    case agent.indexOf("chrome") > -1 && !!window.chrome: return "chrome";
-                    case agent.indexOf("trident") > -1: return "ie";
-                    case agent.indexOf("firefox") > -1: return "firefox";
-                    case agent.indexOf("safari") > -1: return "safari";
-                    default: return "other browser";
-                }
-            })(window.navigator.userAgent.toLowerCase());
             var lang = window.navigator.language;
             var os = window.navigator.platform;
             var online = window.navigator.onLine;
-            var x = window.navigator.geolocation;
             var scrw = window.screen.availWidth;
             var scrh = window.screen.availHeight;
             var currentpath = window.location.pathname;
@@ -102,26 +101,36 @@
               var ip = e.ip;
               var country = e.country;
               var timezone = e.timezone;
+              var pcode = e.postal;
               var city = e.city;
+                $('#city').html(city);
                 $('#ip').html(ip);
                 $('#country').html(country);
                 $('#timezone').html(timezone);
-                $('#city').html(city);
+                $('#pcode').html(pcode);
             },'json');
-           $('#browser_name').html(browser_name);
-           $('#platform').html(os);
+            $('#platform').html(os);
            $('#lang').html(lang);
            $('#online').text(online);
-                var OSName="Unknown OS";
-                if (navigator.appVersion.indexOf("Win")!=-1) OSName="Windows";
-                if (navigator.appVersion.indexOf("Mac")!=-1) OSName="MacOS";
-                if (navigator.appVersion.indexOf("X11")!=-1) OSName="UNIX";
-                if (navigator.appVersion.indexOf("Linux")!=-1) OSName="Linux";
-           $("#OSName").html(OSName);
            $("#scrw").html(scrw);
            $("#scrh").html(scrh);
            $("#currentpath").html(currentpath);
            $("#historylength").html(historylength);
+
+            var instance = $.fn.deviceDetector;
+            var data = instance.getInfo();
+            $('#browser_name').html(data.browserName + '--Version:' + data.browserVersion);
+            $("#OSName").html(data.osName );
+            $("#osv").html(data.osVersionMajor );
+            if (data.desktop == true){
+                $("#device").html('Desktop' );
+
+            }else if (data.mobile == true){
+                $("#device").html('Mobile' );
+
+            }
+
+
         });
     </script>
 </body>
